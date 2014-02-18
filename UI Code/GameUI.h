@@ -3,8 +3,9 @@
 #include <GL/freeglut.h>
 #include <vector>
 #include "BitFont.h"
+#include "LoadTGA.h"
 
-class Button		//Class to handle button rendering
+class Button								//Class to handle button rendering
 {
 private:
 	
@@ -13,14 +14,14 @@ public:
 	Button(int X,int Y);
 	~Button(void);
 
-	void Render(void);	// Button Rendering
+	void Render(void);						// Button Rendering
 	bool Hover (int mx, int my);
-	int x,y;		// x and y = coordinate of button
-	int w,h;		// for future uses 
+	int x,y;								// x and y = coordinate of button
+	int w,h;								// for future uses 
 
 };
 
-class Cursor		// Class to handle Button Selection
+class Cursor								// Class to handle Button Selection
 {
 	private:
 	
@@ -30,26 +31,28 @@ class Cursor		// Class to handle Button Selection
 	~Cursor(void);
 
 	Button* button;
-	void SetCursor(Button* temp) { button = temp; }// Sets cursor to button's position
-	void Render(void);	// Renders the Cursor
-
-
+	void SetCursor(Button* temp) { button = temp; }	// Sets cursor to button's position
+	void Render(void);								// Renders the Cursor
 };
 
-class GameUI		// Class to handle General Menu
+class GameUI									// Class to handle General Menu
 {
 
 private:
+
 	std::vector<Button> MenuButtons;
 	Cursor cursor;
-	
+	TextureImage SplashScreenTexture[1];
 
 public:
+
 	void Render (void);
 	GameUI(void);
 	~GameUI(void);
-
+	
 	void Update(bool up);
-	void AddButton(int x, int y);
+	void AddButton(int x, int y);				// Handles addition of buttons
+	void RenderSplashScreen();					// Renders the SplashScreens
+	bool SplashScreen;						// If TRUE = splash screen on
 };
 

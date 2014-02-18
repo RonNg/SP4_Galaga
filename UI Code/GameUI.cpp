@@ -1,6 +1,6 @@
 #include "GameUI.h"
 
-Vec3D dimensions(75.0f, 35.0f, 0);
+
 using std::vector;
 
 Button::Button(int X, int Y)
@@ -22,6 +22,9 @@ bool Button::Hover(int mx, int my)
 
 void Button::Render(void)
 {
+
+	Vec3D dimensions(75.0f, 35.0f, 0);
+
 	glPushMatrix();
 	glTranslatef (x,y, 0);
 	glColor3f(1,1,1);
@@ -47,14 +50,15 @@ Cursor::~Cursor()
 
 void Cursor::Render(void)
 {
+	Vec3D dimensions(15.0f, 35.0f, 0);
 
 	glPushMatrix();
 	glTranslatef (button->x-100  , button->y , 0);
 	glColor3f(1,1,1);
 		glBegin(GL_TRIANGLES);
-				glVertex2f( dimensions.x/3, dimensions.y/4);
-				glVertex2f( -dimensions.x/3, -dimensions.y);
-				glVertex2f( -dimensions.x/3,dimensions.y);
+				glVertex2f( dimensions.x, dimensions.y-30);
+				glVertex2f( -dimensions.x, -dimensions.y);
+				glVertex2f( -dimensions.x,dimensions.y);
 			glEnd();               // Done Drawing The triangle
 	glPopMatrix();
 
@@ -62,6 +66,11 @@ void Cursor::Render(void)
 
 GameUI::GameUI(void)
 {
+
+	bool SplashScreen = false;
+			glEnable(GL_TEXTURE_2D);			// Enable Texture Mapping
+	bool isloaded = LoadTGA(&SplashScreenTexture[0],"SplashScreen.tga");			// Load The grass Texture
+	
 
 }
 
@@ -79,6 +88,9 @@ void GameUI::Render()
 		i->Render();
 	}
 	cursor.Render();
+
+
+
 }
 
 void GameUI::Update(bool up)
@@ -158,4 +170,21 @@ void GameUI::AddButton(int x, int y)
 	}
 	MenuButtons.insert(i,Button(x,y));
 	cursor.button = &MenuButtons.back();
+}
+
+void GameUI::RenderSplashScreen()
+{	
+	glPushMatrix();
+	Vec3D splashsize (800.0f,600.0f,0);
+	glBindTexture(GL_TEXTURE_2D, SplashScreenTexture[0].texID);
+	glEnable(GL_TEXTURE_2D);
+	glBegin(GL_QUADS);
+	glTexCoord2f(0, 0); glVertex2f(0,splashsize.y);
+	glTexCoord2f(1, 0); glVertex2f(  splashsize.x, splashsize.y);
+	glTexCoord2f(1, 1); glVertex2f(   splashsize.x, 0);
+	glTexCoord2f(0, 1); glVertex2f( 0,  0);
+	glEnd();
+	glDisable(GL_TEXTURE_2D);
+	glPopMatrix();
+
 }
