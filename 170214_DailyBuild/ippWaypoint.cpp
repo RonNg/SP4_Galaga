@@ -28,10 +28,10 @@ bool ippWaypoint::Reached ( Vec3D unitPos )
 
 	if ( distance > range && isActivated() )
 	{
-		return true;
+		return false;
 	}
 
-	return false;
+	return true;
 }
 Vec3D ippWaypoint::DirectionToWP ( Vec3D unitPos )
 {

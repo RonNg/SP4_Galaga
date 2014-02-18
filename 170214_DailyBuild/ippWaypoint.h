@@ -10,7 +10,7 @@ public:
 
 	Vec3D				position; //Waypoint's co-ordinates
 	float				range; // Range at which unit stops moving (prevents overshooting)
-	float				waypointSize; // The size of the waypoint
+	float				waypointSize; // The size of the waypoint for rendering
 	bool				activate; //If waypoint is activated
 
 	//Check if waypoint is activated
@@ -25,6 +25,4 @@ public:
 
 	//Renders the waypoint
 	void				Render();
-
-
 };
