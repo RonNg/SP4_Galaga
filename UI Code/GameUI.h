@@ -5,26 +5,29 @@
 #include "BitFont.h"
 #include "LoadTGA.h"
 
+//===================
+//		Button
+//===================
 class Button								//Class to handle button rendering
 {
 private:
 	
-	
 public:
-	Button(int X,int Y);
+	Button (char* nu,int nx, int ny);
 	~Button(void);
 
-	void Render(void);						// Button Rendering
-	bool Hover (int mx, int my);
+	char* u;
 	int x,y;								// x and y = coordinate of button
-	int w,h;								// for future uses 
-
+	void Render(void);						// Button Rendering
+	
 };
 
+//====================
+//		Cursor
+//====================
 class Cursor								// Class to handle Button Selection
 {
 	private:
-	
 
 	public:
 	Cursor(Button* temp = NULL);
@@ -33,7 +36,12 @@ class Cursor								// Class to handle Button Selection
 	Button* button;
 	void SetCursor(Button* temp) { button = temp; }	// Sets cursor to button's position
 	void Render(void);								// Renders the Cursor
+
 };
+
+//====================
+//		Game UI
+//====================
 
 class GameUI									// Class to handle General Menu
 {
@@ -46,13 +54,19 @@ private:
 
 public:
 
-	void Render (void);
+	bool keypress;								// Checker for splash screen, tests if any key was pressed
+	bool SplashScreen;							// If TRUE = splash screen on
+		
 	GameUI(void);
 	~GameUI(void);
-	
+
+	Button* button;
+
+	void Render (void);
 	void Update(bool up);
-	void AddButton(int x, int y);				// Handles addition of buttons
+	void AddButton (char* u,int x, int y);				// Handles addition of buttons
+	char* Identity (void);
 	void RenderSplashScreen();					// Renders the SplashScreens
-	bool SplashScreen;						// If TRUE = splash screen on
+	
 };
 

@@ -70,11 +70,14 @@ void myApplication::inputKey(int key, int x, int y) {
 void myApplication::KeyboardDown(unsigned char key, int x, int y){
 
 	myKeys[key]= true;
+	if(!myKeys[27])
+	theGameUI->keypress=true;
 }
 
 void myApplication::KeyboardUp(unsigned char key, int x, int y){
 
 	myKeys[key]= false;
+	theGameUI->keypress=false;
 }
 
 void myApplication::MouseMove (int x, int y) {
@@ -238,9 +241,9 @@ bool myApplication::Init(void)
 	}
 	mouseInfo.mLButtonDown = false;
 
-	theGameUI->AddButton(400,300);
-	theGameUI->AddButton(400,200);
-	theGameUI->AddButton(400,100);
+	theGameUI->AddButton("Start",400,350);
+	theGameUI->AddButton("Options",400,250);
+	theGameUI->AddButton("Quit",400,150);
 
 
 		/*
@@ -256,6 +259,22 @@ void myApplication::Update(void)
 {
 	if( myKeys[27] == true )
 		glutLeaveMainLoop();
+	if(	myKeys['w'] == true)
+	{
+		theGameUI->Update(true);
+
+	}
+	else if ( myKeys['s'] == true)
+	{
+		theGameUI->Update(false);
+	}
+
+	//if(myKeys[13] == true)					// edit this to check enter key against button
+	//{
+	//	
+	//}
+
+
 }
 void myApplication::Render(void) {
 	// Clear the buffer
@@ -282,12 +301,11 @@ void myApplication::Render(void) {
 
 	if(theGameUI->SplashScreen)
 	{
-		theGameUI->RenderSplashScreen();
+		theGameUI->RenderSplashScreen();	
 	}
-	else
-	{
+
 		theGameUI->Render();
-	}
+
 	
 	//drawFPS();
 
@@ -302,6 +320,9 @@ void myApplication::Render(void) {
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
 }
+
+
+
 void myApplication::TestRender ()
 {
 

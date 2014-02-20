@@ -1,23 +1,21 @@
 #include "GameUI.h"
 
-
 using std::vector;
 
-Button::Button(int X, int Y)
+
+//=================
+//		Button
+//=================
+
+Button::Button (char* nu,int nx, int ny)
 {
-	x = X;
-	y = Y;
-
+	x = nx;
+	y = ny;
+	u = nu;
 }
-
 Button::~Button(void)
 {
 
-}
-
-bool Button::Hover(int mx, int my)
-{
-	return true;
 }
 
 void Button::Render(void)
@@ -37,6 +35,10 @@ void Button::Render(void)
 	glPopMatrix();
 
 }
+
+//====================
+//		Cursor
+//====================
 
 Cursor::Cursor(Button* temp)
 {
@@ -64,16 +66,22 @@ void Cursor::Render(void)
 
 }
 
+//====================
+//		Game UI
+//====================
+
+
 GameUI::GameUI(void)
 {
 
-	bool SplashScreen = false;
+
+	keypress=false;
+	SplashScreen = true;
 			glEnable(GL_TEXTURE_2D);			// Enable Texture Mapping
 	bool isloaded = LoadTGA(&SplashScreenTexture[0],"SplashScreen.tga");			// Load The grass Texture
 	
 
 }
-
 
 GameUI::~GameUI(void)
 {
@@ -82,66 +90,78 @@ GameUI::~GameUI(void)
 
 void GameUI::Render()
 {
+
+	if(SplashScreen)
+	{
+		if (keypress)
+		{
+		SplashScreen = false;
+		}
+	}
+	if(!SplashScreen)
+	{
 	vector<Button>::iterator i = MenuButtons.begin();	// Indicates position of button 
 	for (; i != MenuButtons.end(); i++)
 	{
 		i->Render();
 	}
 	cursor.Render();
-
-
+	}
 
 }
 
 void GameUI::Update(bool up)
 {
-	bool add = false;
-	
-	if (up)
+	if(!SplashScreen)
 	{
-		if(cursor.button == &MenuButtons.front())
+		bool add = false;
+
+		if (!up)
 		{
-			cursor.button = &MenuButtons.back();
-			return;
-		}
-		vector<Button>::reverse_iterator i = MenuButtons.rbegin();
-		for (; i != MenuButtons.rend(); i++)
-		{
-			if (add)
+			if(cursor.button == &MenuButtons.front())
 			{
-				cursor.button = &*i;
+				cursor.button = &MenuButtons.back();
 				return;
 			}
-			else if (&*i == cursor.button) 
+			vector<Button>::reverse_iterator i = MenuButtons.rbegin();
+			for (; i != MenuButtons.rend(); i++)
 			{
-				add = true;
+				if (add)
+				{
+					cursor.button = &*i;
+					return;
+				}
+				else if (&*i == cursor.button) 
+				{
+					add = true;
+				}
 			}
 		}
-	}
-	else
-	{
-		if (cursor.button == &MenuButtons.back())
+		else
 		{
-			cursor.button = &MenuButtons.front();
-			return;
-		}
-		vector<Button>::iterator i = MenuButtons.begin();// Indicates position of button 
-		for (; i != MenuButtons.end(); i++)
-		{
-			if (add)
+			if (cursor.button == &MenuButtons.back())
 			{
-				cursor.button = &*i;
+				cursor.button = &MenuButtons.front();
 				return;
 			}
-			else if (&*i == cursor.button) 
+			vector<Button>::iterator i = MenuButtons.begin();	// Indicates position of button 
+			for (; i != MenuButtons.end(); i++)
 			{
-				add = true;
+				if (add)
+				{
+					cursor.button = &*i;
+					return;
+				}
+				else if (&*i == cursor.button) 
+				{
+					add = true;
+				}
 			}
 		}
 	}
 }
 
-void GameUI::AddButton(int x, int y)
+void GameUI::AddButton (char* u,int x, int y)
 {
 	if (MenuButtons.size() >= 3)						// Limits Buttons created to 3
 	{
@@ -149,13 +169,13 @@ void GameUI::AddButton(int x, int y)
 	}
 	else if (MenuButtons.size() == 0)
 	{
-		MenuButtons.push_back(Button(x, y));
+		MenuButtons.push_back(Button(u,x,y));
 		cursor.button = &MenuButtons.back();
 		return;
 	}
 	else if (y < MenuButtons.back().y)
 	{
-		MenuButtons.push_back(Button(x, y));
+		MenuButtons.push_back(Button(u,x,y));
 		cursor.button = &MenuButtons.back();
 		return;
 	}
@@ -168,23 +188,44 @@ void GameUI::AddButton(int x, int y)
 			break;
 		}
 	}
-	MenuButtons.insert(i,Button(x,y));
+	MenuButtons.insert(i,Button(x,y));               // error here
 	cursor.button = &MenuButtons.back();
 }
 
 void GameUI::RenderSplashScreen()
 {	
+	
 	glPushMatrix();
 	Vec3D splashsize (800.0f,600.0f,0);
 	glBindTexture(GL_TEXTURE_2D, SplashScreenTexture[0].texID);
 	glEnable(GL_TEXTURE_2D);
 	glBegin(GL_QUADS);
 	glTexCoord2f(0, 0); glVertex2f(0,splashsize.y);
-	glTexCoord2f(1, 0); glVertex2f(  splashsize.x, splashsize.y);
-	glTexCoord2f(1, 1); glVertex2f(   splashsize.x, 0);
+	glTexCoord2f(1, 0); glVertex2f(splashsize.x, splashsize.y);
+	glTexCoord2f(1, 1); glVertex2f(splashsize.x, 0);
 	glTexCoord2f(0, 1); glVertex2f( 0,  0);
 	glEnd();
 	glDisable(GL_TEXTURE_2D);
 	glPopMatrix();
 
+	if(SplashScreen)
+	{
+	static float colortemp = 1.0f;							// temp for color changing
+
+
+
+	glColor3f(colortemp,colortemp,colortemp);
+	glRasterPos2f(225,525);
+	glPrint("[PRESS ANY KEY TO CONTINUE]");
+	colortemp-=0.03f;
+
+	if(colortemp <=0.0f)
+	colortemp = 1.0f;
+	}
+
+}
+
+char* GameUI::Identity (void)
+{
+	return cursor.button->u;
 }
