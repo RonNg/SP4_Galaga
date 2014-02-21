@@ -2,7 +2,7 @@
 
 
 ippEnemy::ippEnemy( Vec3D thisposition )
-:	position( thisposition.x, thisposition.y, 0)
+:	position( 0.0f, 0.0f, 0.0f )
 ,	gridPos(0,0,0)
 ,	rotVal(0.0f)
 ,	stopRotation(true)
@@ -13,6 +13,7 @@ ippEnemy::ippEnemy( Vec3D thisposition )
 ,	currentState(FLOATING)
 {
 	srand(time(NULL));
+	position = thisposition;
 }
 
 ippEnemy::~ippEnemy(void)
@@ -76,6 +77,7 @@ void ippEnemy::Rotation()
 
 void ippEnemy::Update()
 {
+	printf( "%3.3f, %3.3f\n", position.x, position.y );
 	if( !waypoint.Reached(position) )
 	{
 		Rotation();

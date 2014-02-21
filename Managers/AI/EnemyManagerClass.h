@@ -64,14 +64,21 @@ public:
 	void ActivateSpawn();
 
 	Vec3D AssignGridSlot( int num );
+
+	float DegreeTen( float num );
 	
-	void Spawner( int number_of_ships, int enemy_type, Vec3D spawnpoint, Vec3D flyThere, float interval = 10.0f ); 
-	void Spawner( int number_of_ships, int enemy_type, float spawnX, float spawnY, float flyX, float flyY, float interval = 10.0f );
+	void Spawner( int number_of_ships, int enemy_type, Vec3D spawnpoint, float interval = 10.0f ); 
+	void Spawner( int number_of_ships, int enemy_type, float spawnX, float spawnY, float interval = 10.0f );
+	void SetSpawnPoint( Vec3D point );
+	void SetSpawnPoint( float pointX, float pointY );
+	void SetSpawnInterval( float timeDelay );
+	void SetNumberOfSpawn( int limitNumber );
 	
-	void AddWaypoint( Vec3D point, int tracker );
-	void AddWaypoint( float pointX, float pointY, int tracker );
-	void AddLoop( Vec3D point, bool clockwise, int tracker, int stopHere, int angleBreak = 0, float size = 100.0f, float angle = 6.283185308f );
-	void AddLoop( float pointX, float pointY, bool clockwise, int tracker, int stopHere, int angleBreak = 0, float size = 100.0f, float angle = 6.283185308f );
+	void ResetTracker();
+	void AddWaypoint( Vec3D point );
+	void AddWaypoint( float pointX, float pointY );
+	void AddLoop( Vec3D point, bool clockwise, int stopHere, int angleBreak = 0, float size = 100.0f, float angle = 6.283185308f );
+	void AddLoop( float pointX, float pointY, bool clockwise, int stopHere, int angleBreak = 0, float size = 100.0f, float angle = 6.283185308f );
 	
 	void ClearWaypoints();
 	void ResetWaypointsAt( Vec3D point );
@@ -79,4 +86,5 @@ public:
 	void ShowWaypoints();
 	void Update();
 	void Render();
+	void RenderWaypoints();
 };

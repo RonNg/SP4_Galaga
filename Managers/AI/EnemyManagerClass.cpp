@@ -37,9 +37,9 @@ void ippEnemyManagerClass::Init()
 	list_of_positions = new Vec3D[ numberOfPoints ];					//	CREATING ARRAY BASED ON SIZE OF TURNING POINT
 	int num = 0;
 
-	ResetWaypointsAt( 400.0f, 400.0f );
-	AddLoop( 200.0f, 300.0f, false, 0, 62, 5, 100.0f );
-	AddWaypoint( 500.0f, 500.0f, 62 );
+	ResetWaypointsAt( 500.0f, 500.0f );
+	AddLoop( 200.0f, 300.0f, false, 62, 7, 100.0f );
+	AddWaypoint( 500.0f, 500.0f );
 	//ShowWaypoints();
 	//	=	=	=	=	=	THIS CODE IS FOR DEBUGGING VALUES	=	=	=	=	=
 	//for( int i = 0; i < numberOfPoints; i++ )							//	THIS CODE WAS THE ORIGINAL CIRCLE CODES
@@ -94,37 +94,65 @@ Vec3D ippEnemyManagerClass::AssignGridSlot( int num )
 	return Vec3D( theGrid->GetGridShipX()[yMulti], theGrid->GetGridShipY()[xMulti], 0 );
 }
 
-void ippEnemyManagerClass::Spawner( int number_of_ships, int enemy_type, Vec3D spawnpoint, Vec3D flyThere, float interval )
+float ippEnemyManagerClass::DegreeTen( float num )
+{
+	return num * tenDegrees;
+}
+
+void ippEnemyManagerClass::Spawner( int number_of_ships, int enemy_type, Vec3D spawnpoint, float interval )
 {
 	wave_max = number_of_ships;
 	spawnerPos = spawnpoint;
-	firstWaypoint = flyThere;
 	diffTime = interval;
 	activateSpawner = true;
 }
 
-void ippEnemyManagerClass::Spawner( int number_of_ships, int enemy_type, float spawnX, float spawnY, float flyX, float flyY, float interval )
+void ippEnemyManagerClass::Spawner( int number_of_ships, int enemy_type, float spawnX, float spawnY, float interval )
 {
 	wave_max = number_of_ships;
 	spawnerPos = Vec3D( spawnX, spawnY, 0.0f );
-	firstWaypoint = Vec3D( flyX, flyY, 0.0f );
 	diffTime = interval;
 	activateSpawner = true;
 }
 
-void ippEnemyManagerClass::AddWaypoint( Vec3D point, int tracker )
+void ippEnemyManagerClass::SetSpawnPoint( Vec3D point )
 {
-	ChangeLastPoint( tracker );
-	list_of_positions[tracker] = point;
+	spawnerPos = point;
 }
 
-void ippEnemyManagerClass::AddWaypoint( float pointX, float pointY, int tracker )
+void ippEnemyManagerClass::SetSpawnPoint( float pointX, float pointY )
 {
-	ChangeLastPoint( tracker );
-	list_of_positions[tracker] = Vec3D( pointX, pointY, 0.0f );
+	spawnerPos = Vec3D( pointX, pointY, 0.0f );
 }
 
-void ippEnemyManagerClass::AddLoop( Vec3D point, bool clockwise, int tracker, int stopHere, int angleBreak, float size, float angle )
+void ippEnemyManagerClass::SetSpawnInterval( float timeDelay )
+{
+	diffTime = timeDelay;
+}
+
+void ippEnemyManagerClass::SetNumberOfSpawn( int limitNumber )
+{
+	wave_max = limitNumber;
+}
+
+void ippEnemyManagerClass::ResetTracker()
+{
+	ChangeLastPoint( 1 );
+}
+
+void ippEnemyManagerClass::AddWaypoint( Vec3D point )
+{
+	ChangeLastPoint( lastPoint + 1 );
+	list_of_positions[lastPoint + 1] = point;
+}
+
+void ippEnemyManagerClass::AddWaypoint( float pointX, float pointY )
+{
+	ChangeLastPoint( lastPoint + 1 );
+	list_of_positions[lastPoint + 1] = Vec3D( pointX, pointY, 0.0f );
+}
+
+void ippEnemyManagerClass::AddLoop( Vec3D point, bool clockwise, int stopHere, int angleBreak, float size, float angle )
 {
 	//	=	=	=	=	=	EXTRA INFORMATION	=	=	=	=	=
 	//	the for() loop below
@@ -138,14 +166,14 @@ void ippEnemyManagerClass::AddLoop( Vec3D point, bool clockwise, int tracker, in
 	//	and biggest is recommended to be 0.1
 	//	because 1.0 causes a huge jump from one point to another
 	//	=	=	=	=	=	EXTRA INFORMATION	=	=	=	=	=
-	int num = tracker;
+	int num = lastPoint;
 	if( clockwise )
 	{	//	CREATE WAYPOINTS BASED ON CIRCLE FORMULA
-		for( double tempAngle = ( angleBreak * tenDegrees ); tempAngle <= angle + ( angleBreak * tenDegrees ); tempAngle += 0.1 )
+		for( double tempAngle = DegreeTen( angleBreak ); tempAngle <= angle + DegreeTen( angleBreak ); tempAngle += 0.1 )
 		{
 			list_of_positions[num] = Vec3D( size * cos(tempAngle) + point.x, size * sin(tempAngle) + point.y, 0.0f );
 			num++;
-			if( num >= stopHere + tracker )
+			if( num >= stopHere + lastPoint )
 			{
 				ChangeLastPoint( num );
 				break;
@@ -154,29 +182,30 @@ void ippEnemyManagerClass::AddLoop( Vec3D point, bool clockwise, int tracker, in
 	}
 	else
 	{
-		for( double tempAngle = angle + ( angleBreak * tenDegrees ); tempAngle >= ( angleBreak * tenDegrees ); tempAngle -= 0.1 )
+		for( double tempAngle = angle + DegreeTen( angleBreak ); tempAngle >= DegreeTen( angleBreak ); tempAngle -= 0.1 )
 		{
 			list_of_positions[num] = Vec3D( size * cos(tempAngle) + point.x, size * sin(tempAngle) + point.y, 0.0f );
 			num++;
-			if( num >= stopHere + tracker )
+			if( num >= stopHere + lastPoint )
 			{
 				ChangeLastPoint( num );
 				break;
 			}
 		}
 	}
+	ChangeLastPoint( num + 1 );
 }
 
-void ippEnemyManagerClass::AddLoop( float pointX, float pointY, bool clockwise, int tracker, int stopHere, int angleBreak, float size, float angle )
+void ippEnemyManagerClass::AddLoop( float pointX, float pointY, bool clockwise, int stopHere, int angleBreak, float size, float angle )
 {
-	int num = tracker;
+	int num = lastPoint;
 	if( clockwise )
 	{
-		for( double tempAngle = ( angleBreak * tenDegrees ); tempAngle <= angle + ( angleBreak * tenDegrees ); tempAngle += 0.1 )
+		for( double tempAngle = DegreeTen( angleBreak ); tempAngle <= angle + DegreeTen( angleBreak ); tempAngle += 0.1 )
 		{
 			list_of_positions[num] = Vec3D( size * cos(tempAngle) + pointX, size * sin(tempAngle) + pointY, 0.0f );
 			num++;
-			if( num >= stopHere + tracker )
+			if( num >= stopHere + lastPoint )
 			{
 				ChangeLastPoint( num );
 				break;
@@ -185,17 +214,18 @@ void ippEnemyManagerClass::AddLoop( float pointX, float pointY, bool clockwise, 
 	}
 	else
 	{
-		for( double tempAngle = angle + ( angleBreak * tenDegrees ); tempAngle >= ( angleBreak * tenDegrees ); tempAngle -= 0.1 )
+		for( double tempAngle = angle + DegreeTen( angleBreak ); tempAngle >= DegreeTen( angleBreak  ); tempAngle -= 0.1 )
 		{
 			list_of_positions[num] = Vec3D( size * cos(tempAngle) + pointX, size * sin(tempAngle) + pointY, 0.0f );
 			num++;
-			if( num >= stopHere + tracker )
+			if( num >= stopHere + lastPoint )
 			{
 				ChangeLastPoint( num );
 				break;
 			}
 		}
 	}
+	ChangeLastPoint( num + 1 );
 }
 
 void ippEnemyManagerClass::ClearWaypoints()
@@ -237,13 +267,16 @@ void ippEnemyManagerClass::Update()
 {
 	if( activateSpawner )
 	{
+		//printf( "current time %3.3f\n", curTime );
 		curTime += Global::timedelta;
 		if( curTime > prevTime + diffTime )							//	TIMER TO DELAY SENDING OUT SHIPS	
 		{
+			curTime = 0.0f;
 			prevTime = curTime;
 			enemyWave_.push_back( new ippEnemy( spawnerPos ) );
+			printf( "%3.3f, %3.3f\n", spawnerPos.x, spawnerPos.y );
+			enemyWave_.at(wave_num)->SetPosition( spawnerPos );
 			enemyWave_.at(wave_num)->StateMove();
-			enemyWave_.at(wave_num)->MoveToWaypoint( firstWaypoint );
 			enemyWave_.at(wave_num)->SetGridPos( AssignGridSlot( wave_num ) );
 			wave_num ++;											//	COUNTER TO KEEP TRACK OF NUMBER OF SHIPS CREATED
 		}															//	SHOULD NOT RESET UNTIL ALL SHIPS DESTROYED
@@ -293,10 +326,27 @@ void ippEnemyManagerClass::Update()
 void ippEnemyManagerClass::Render()
 {
 	theGrid->Render();
-
+	RenderWaypoints();
 	for( list_of_enemy::iterator enemy = enemyWave_.begin();
 		enemy != enemyWave_.end(); enemy++ )
 	{
 		(*enemy)->Render();
+	}
+}
+
+void ippEnemyManagerClass::RenderWaypoints()
+{
+	for( int num = 0; num < lastPoint; num ++ )
+	{
+		glPushMatrix();
+		glTranslatef( list_of_positions[num].x, list_of_positions[num].y, list_of_positions[num].z );
+		glColor4f( 1.0f, 1.0f, 1.0f, 0.4f );
+		glBegin(GL_QUADS);
+		glTexCoord2f( 0, 1 ); glVertex2f( -10.0f, 10.0f );
+		glTexCoord2f( 0, 0 ); glVertex2f( -10.0f, -10.0f );
+		glTexCoord2f( 1, 0 ); glVertex2f( 10.0f, -10.0f );
+		glTexCoord2f( 1, 1 ); glVertex2f( 10.0f, 10.0f );
+		glEnd();
+		glPopMatrix();
 	}
 }
