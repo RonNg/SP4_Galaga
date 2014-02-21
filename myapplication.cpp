@@ -15,10 +15,6 @@ myApplication::~myApplication()
 	{
 		delete theCamera;
 	}
-	if( theEnemyManager != NULL )
-	{
-		delete theEnemyManager;
-	}
 }
 
 myApplication* myApplication::getInstance()
@@ -242,12 +238,6 @@ bool myApplication::Init(void)
 	===========================================
 	*/
 	
-	theEnemyManager = new ippEnemyManagerClass();
-	theEnemyManager->Init();
-	theEnemyManager->InitGrid( 200.0f, 200.0f, 9, 9, 20.0f, 20.0f, 400.0f, 200.0f );
-	theEnemyManager->Spawner( 1, 0, Vec3D( 400, 400, 0.0f ), Vec3D( 0.0f, 500.0f, 0.0f ), 0.125f );
-	//theEnemyManager->CreateWaves(360, 0);
-
 	return true;
 }
 void myApplication::Update(void) 
@@ -255,7 +245,6 @@ void myApplication::Update(void)
 	if( myKeys[27] == true )
 		glutLeaveMainLoop();
 
-	theEnemyManager->Update();
 }
 void myApplication::Render(void) {
 	// Clear the buffer
@@ -270,17 +259,15 @@ void myApplication::Render(void) {
 		calculateFPS();
 		Global::prevFrameTime = Global::curFrameTime;
 		Global::curFrameTime = timeGetTime();
-		//Global::timedelta = (Global::curFrameTime - Global::prevFrameTime) / 1000.0f; // Time in seconds
 		Global::timedelta = 1000 / this->fps / (Global::curFrameTime - Global::prevFrameTime);
 		Global::prevFrameTime = Global::curFrameTime;
-			cout << Global::timedelta << endl;
 
 		Update();
 	}
 
 	// Enable 2D text display and HUD
 	theCamera->SetHUD( true );
-	TestRender();
+	//TestRender();
 	drawFPS();
 	theCamera->SetHUD( false );	
 
@@ -298,7 +285,6 @@ void myApplication::TestRender ()
 	glBlendFunc (GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 	glEnable(GL_TEXTURE_2D);
 	
-	theEnemyManager->Render();
 	
 	glPushMatrix();
 		glTranslatef(596, 4, 0);

@@ -2,9 +2,8 @@
 #include <GL/freeglut.h>
 #include <iostream>
 #include <vector>
-#include "Camera.h"
-//#include "ippShip.h"
-#include "EnemyManagerClass.h"
+#include "Camera\Camera.h"
+
 
 #include "Globals.h"
 using namespace Global;
@@ -77,10 +76,6 @@ public:
 	ippCamera*				theCamera;
 	// The mouse struct
 	theMouseInfo			mouseInfo;
-
-	// The Enemy AI controller
-	ippEnemyManagerClass*	theEnemyManager;
-	
 	//  The number of frames
 	int						frameCount;
 	//  Number of frames per second
@@ -105,10 +100,6 @@ public:
 	===========================================
 	*/
 	void					TestRender();
-
-
-	//ippShip*				playerShip;
-
 	
 
 };
