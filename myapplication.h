@@ -2,8 +2,6 @@
 #include <GL/freeglut.h>
 #include <iostream>
 #include <vector>
-#include "Camera\Camera.h"
-
 
 #include "Globals.h"
 using namespace Global;
@@ -19,6 +17,10 @@ typedef struct
 	int  lastX, lastY;
 } theMouseInfo;
 
+
+class ippEnemy;
+class ippCamera;
+class ippEnemyManager;
 
 class myApplication 
 {
@@ -74,8 +76,10 @@ public:
 
 	// The camera
 	ippCamera*				theCamera;
+
 	// The mouse struct
 	theMouseInfo			mouseInfo;
+	
 	//  The number of frames
 	int						frameCount;
 	//  Number of frames per second
@@ -100,6 +104,12 @@ public:
 	===========================================
 	*/
 	void					TestRender();
+
+	
+	ippEnemy*				testEnemy;
+	ippEnemyManager*		enemyManager;
+
+
 	
 
 };

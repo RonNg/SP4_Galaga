@@ -1,5 +1,10 @@
 #include "myapplication.h"
 #include <mmsystem.h>
+#include "AI\Enemy.h"
+#include "Camera\Camera.h"
+
+#include "Managers\ObjectManager.h"
+#include "Managers\EnemyManager.h"
 
 myApplication * myApplication::s_pInstance = NULL;
 
@@ -237,13 +242,19 @@ bool myApplication::Init(void)
 	should be placed here onwards.
 	===========================================
 	*/
-	
+
+	//testEnemy = new ippEnemy ( Vec3D ( 400, 400, 0 ) );
+
+	enemyManager = new ippEnemyManager ();
 	return true;
 }
 void myApplication::Update(void) 
 {
 	if( myKeys[27] == true )
 		glutLeaveMainLoop();
+	 
+	ippObjectManager::GetInstance()->Update();
+	enemyManager->Update();
 
 }
 void myApplication::Render(void) {
@@ -259,21 +270,38 @@ void myApplication::Render(void) {
 		calculateFPS();
 		Global::prevFrameTime = Global::curFrameTime;
 		Global::curFrameTime = timeGetTime();
+		
+		
 		Global::timedelta = 1000 / this->fps / (Global::curFrameTime - Global::prevFrameTime);
+
+		//Temporary fix. 
+		//Make the game wait 5 seconds before starting as the starting fps affects movement
+		if ( fps < 5 )
+			Global::timedelta = 1;
+
 		Global::prevFrameTime = Global::curFrameTime;
 
 		Update();
 	}
 
+
+
+
+
 	// Enable 2D text display and HUD
 	theCamera->SetHUD( true );
-	//TestRender();
-	drawFPS();
+	
+	ippObjectManager::GetInstance()->Render();
+		drawFPS();
+	
 	theCamera->SetHUD( false );	
+
+
+
+
 
 	// Flush off any entity which is not drawn yet, so that we maintain the frame rate.
 	glFlush();
-
 	// swapping the buffers causes the rendering above to be shown
 	glutSwapBuffers();
 }
