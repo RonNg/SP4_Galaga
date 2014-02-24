@@ -4,7 +4,6 @@
 #include <vector>
 #include "BitFont.h"
 #include "LoadTGA.h"
-
 //===================
 //		Button
 //===================
@@ -13,7 +12,7 @@ class Button								//Class to handle button rendering
 private:
 	
 public:
-	Button (char* nu,int nx, int ny);
+	Button (char* G,int nx, int ny);
 	~Button(void);
 
 	char* u;
@@ -40,33 +39,51 @@ class Cursor								// Class to handle Button Selection
 };
 
 //====================
+//		Menus
+//====================
+class Menu
+{
+private:
+	TextureImage	Texture;
+public:
+	char* name;
+	std::vector<Button> MenuButtons;
+	Menu (char* Name,char* filename);
+	~Menu(void);
+	void Render (void);
+};
+
+//====================
 //		Game UI
 //====================
 
 class GameUI									// Class to handle General Menu
 {
-
 private:
-
-	std::vector<Button> MenuButtons;
 	Cursor cursor;
-	TextureImage SplashScreenTexture[1];
-
+	int Find (char* name);						// finds cursor position
 public:
+	void Move (char* name);						//Goes to the menu with that name.
 
-	bool keypress;								// Checker for splash screen, tests if any key was pressed
+	unsigned short current;						//current page you're on (number)
+	char* page (void);							//name of page you're on.
+
+	std::vector<Menu> List;
 	bool SplashScreen;							// If TRUE = splash screen on
-		
+	bool EnterKey;								// For Handling of Enter key being pressed or not
+	
 	GameUI(void);
 	~GameUI(void);
 
-	Button* button;
 
+	char* Identity (void); //Name of button cursor is on.
 	void Render (void);
 	void Update(bool up);
+
+	void AddMenu (char* name,char* filename);
 	void AddButton (char* u,int x, int y);				// Handles addition of buttons
-	char* Identity (void);
-	void RenderSplashScreen();					// Renders the SplashScreens
-	
+
+	void RenderSplashScreen();							// Renders the SplashScreens
+	void RenderGameScreen();							// Renders GameScreen
 };
 

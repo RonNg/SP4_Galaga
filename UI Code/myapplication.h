@@ -26,7 +26,9 @@ typedef struct
 
 class myApplication 
 {
-
+private:
+	char* command;
+	bool click;
 public:
 
 	// this is a constructor, it is implemented in myapplication.cpp

@@ -67,17 +67,16 @@ void myApplication::inputKey(int key, int x, int y) {
 	//}
 }
 
-void myApplication::KeyboardDown(unsigned char key, int x, int y){
-
+void myApplication::KeyboardDown(unsigned char key, int x, int y)
+{
+	click = true;
 	myKeys[key]= true;
-	if(!myKeys[27])
-	theGameUI->keypress=true;
 }
 
-void myApplication::KeyboardUp(unsigned char key, int x, int y){
-
+void myApplication::KeyboardUp(unsigned char key, int x, int y)
+{
 	myKeys[key]= false;
-	theGameUI->keypress=false;
+	click = false;
 }
 
 void myApplication::MouseMove (int x, int y) {
@@ -241,10 +240,39 @@ bool myApplication::Init(void)
 	}
 	mouseInfo.mLButtonDown = false;
 
-	theGameUI->AddButton("Start",400,350);
-	theGameUI->AddButton("Options",400,250);
-	theGameUI->AddButton("Quit",400,150);
 
+	////////////////////////
+	//	UI Initialisations//
+	////////////////////////
+	// AddMenu = creates new page
+	// AddMenu("User Defined name for page", "Loaded targa for page")
+	// AddButton = Creates new button
+	// AddButton("User Defined name for button", coords for button)
+
+	theGameUI->AddMenu("Splash","SplashScreen.tga");
+
+	theGameUI->AddMenu("Main Menu","Background.tga");
+
+	theGameUI->AddButton("Start",400,250);
+	theGameUI->AddButton("Options",400,300);
+	theGameUI->AddButton("Shop",400, 350);
+	theGameUI->AddButton("Quit", 400, 400);
+
+	theGameUI->AddMenu("Game Start","GameScreen.tga");
+
+	// Insert Game Screen here
+
+	theGameUI->AddMenu("Shop","ShopScreen.tga");
+
+	//Insert Buttons for shop
+	theGameUI->AddButton("ShipUpgrades",200,250);
+	theGameUI->AddButton("Weapons",200,300);
+	theGameUI->AddButton("Back",200,350);
+
+	theGameUI->AddMenu("ShipUpgrades","ShipUpgrades.tga");
+
+
+	theGameUI->Move("Splash");
 
 		/*
 	===========================================
@@ -257,32 +285,62 @@ bool myApplication::Init(void)
 }
 void myApplication::Update(void) 
 {
-	if( myKeys[27] == true )
-		glutLeaveMainLoop();
+	if( myKeys[13] == true)
+	{
+		command = theGameUI->Identity();
+	}
 	if(	myKeys['w'] == true)
 	{
 		theGameUI->Update(true);
-
+		myKeys['w'] = false;
 	}
 	else if ( myKeys['s'] == true)
 	{
 		theGameUI->Update(false);
+		myKeys['s'] = false;
 	}
 
-	//if(myKeys[13] == true)					// edit this to check enter key against button
-	//{
-	//	
-	//}
 
+	if (theGameUI->page() == "Splash")
+	{
+
+		if(click == true)
+			theGameUI->Move("Main Menu");	
+	}
+	else if (theGameUI->page() == "Main Menu")
+	{
+		if (command == "Start" )
+		{
+			theGameUI->Move("Game Start");
+		}
+		else if  (command == "Options")
+		{
+
+		}
+		else if  (command == "Shop")
+		{
+			theGameUI->Move("Shop");
+		}
+		else if  (command == "Quit")
+		{
+			glutLeaveMainLoop();
+		}
+	}
+	else if (theGameUI->page() == "Shop");
+	{
+		if(command == "ShipUpgrades")
+		{
+			theGameUI->Move("ShipUpgrades");
+		}
+	}
 
 }
 void myApplication::Render(void) {
 	// Clear the buffer
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+	glClearColor(0,0,0,1);
 	glLoadIdentity();
-	theCamera->Update();
-
+	//theCamera->Update();
 	if ((timeGetTime()- Global::prevFrameTime)>1000/frequency)
 	{
 		// Calculate the framerate
@@ -297,22 +355,25 @@ void myApplication::Render(void) {
 
 	// Enable 2D text display and HUD
 	theCamera->SetHUD( true );
-	TestRender();
+	
 
-	if(theGameUI->SplashScreen)
+	theGameUI->Render();
+	if(theGameUI->page() == "Splash" )
 	{
-		theGameUI->RenderSplashScreen();	
+		static float colortemp = 1.0f;							// temp for color changing
+		glColor3f(colortemp,colortemp,colortemp);
+		glRasterPos2f(225,525);
+		glPrint("[PRESS ANY KEY TO CONTINUE]");
+		colortemp-=0.03f;
+		if(colortemp <=0.0f)
+		colortemp = 1.0f;
+		glColor3f(1,1,1);
 	}
-
-		theGameUI->Render();
-
 	
 	//drawFPS();
 
 
 	theCamera->SetHUD( false );
-
-	
 
 	// Flush off any entity which is not drawn yet, so that we maintain the frame rate.
 	glFlush();
