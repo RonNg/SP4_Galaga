@@ -24,7 +24,7 @@ void Button::Render(void)
 
 	glPushMatrix();
 	glTranslatef (x,y, 0);
-	glColor3f(1,1,1);
+	glColor3f(1,0,1);
 	  glBegin(GL_QUADS);                      // Draw A Quad
 	  glVertex2f(-dimensions.x, dimensions.y);              // Top Left
         glVertex2f( dimensions.x, dimensions.y);              // Top Right

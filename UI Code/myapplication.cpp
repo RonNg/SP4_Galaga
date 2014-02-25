@@ -210,6 +210,10 @@ void myApplication::printw (float x, float y, float z, char* format, ...)
 
 bool myApplication::Init(void)
 {
+	playonce =true;
+	theSoundEngine = createIrrKlangDevice();
+	if(!theSoundEngine)
+		return false;
 	theGameUI = new GameUI();
 	// Set camera position
 	theCamera = new ippCamera( ippCamera::LAND_CAM );
@@ -248,18 +252,18 @@ bool myApplication::Init(void)
 	// AddMenu("User Defined name for page", "Loaded targa for page")
 	// AddButton = Creates new button
 	// AddButton("User Defined name for button", coords for button)
-
+	
 	theGameUI->AddMenu("Splash","SplashScreen.tga");
 
 	theGameUI->AddMenu("Main Menu","Background.tga");
-
+	
 	theGameUI->AddButton("Start",400,250);
 	theGameUI->AddButton("Options",400,300);
 	theGameUI->AddButton("Shop",400, 350);
 	theGameUI->AddButton("Quit", 400, 400);
 
 	theGameUI->AddMenu("Game Start","GameScreen.tga");
-
+	
 	// Insert Game Screen here
 
 	theGameUI->AddMenu("Shop","ShopScreen.tga");
@@ -300,18 +304,25 @@ void myApplication::Update(void)
 		myKeys['s'] = false;
 	}
 
-
+	
 	if (theGameUI->page() == "Splash")
 	{
 
-		if(click == true)
+		if (playonce == true){
+		Sound_BGM = theSoundEngine->play2D("Sounds/BGM.mp3",false);
+		playonce = false;
+		}
+		if(click == true){
 			theGameUI->Move("Main Menu");	
+			Sound_BGM = false;
+		}
 	}
 	else if (theGameUI->page() == "Main Menu")
 	{
 		if (command == "Start" )
 		{
 			theGameUI->Move("Game Start");
+			Sound_ThemeSong = theSoundEngine->play2D("Sounds/Theme_Song.mp3",false);
 		}
 		else if  (command == "Options")
 		{
@@ -325,7 +336,10 @@ void myApplication::Update(void)
 		{
 			glutLeaveMainLoop();
 		}
+		
+
 	}
+
 	else if (theGameUI->page() == "Shop");
 	{
 		if(command == "ShipUpgrades")

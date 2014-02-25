@@ -1,3 +1,5 @@
+#pragma comment(lib, "irrKlang.lib")
+
 #include <stdio.h>
 #include <GL/freeglut.h>
 #include <iostream>
@@ -8,9 +10,11 @@
 #include "GameUI.h"
 #include "ippGlobals.h"
 #include "LoadTGA.h"
+#include "irrKlang.h"
 
 using namespace Global;
-
+using namespace irrklang;
+			
 
 //Mouse Info
 typedef struct
@@ -29,8 +33,18 @@ class myApplication
 private:
 	char* command;
 	bool click;
-public:
 
+	////////////////////////////////////
+	//	ISound* (your sound name here)//
+	////////////////////////////////////
+	// call sound in application update function
+
+	ISoundEngine* theSoundEngine;
+	ISound* Sound_ThemeSong;
+	ISound* Sound_BGM;
+
+public:
+	bool playonce;
 	// this is a constructor, it is implemented in myapplication.cpp
 	myApplication();
 	// this is a destructor, it is implemented in myapplication.cpp
