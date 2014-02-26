@@ -14,23 +14,27 @@ private:
 	string useThisFile;
 	bool addOn;
 	
-	string ConvertInt( int num );
-	bool IsInteger( string &ss );
+	string ConvertInt					( int num );
+	bool IsInteger						( string &ss );
 
 public:
-	static ippSaveManager* GetInstance();
-	void DropInstance();
+	static ippSaveManager* GetInstance	();
+	void DropInstance					();
 
-	bool Init( string fileName );
+	bool Init							( string fileName );
 	
-	bool EncryptThis( const string information );
-	bool EncryptThis( const int information );
-	bool Get( string information );
-	
-	void ClearAll();
+	bool AddCategory					( const string categoryName );
+	bool AddInformationInto				( const string information, const string categoryName );
+	bool EditThis						( const string target, const string change );
 
-	bool SaveTo ( string fileName );
-	bool GetEverything();
+	bool EncryptThis					( const string information );
+	bool EncryptThis					( const int information );
+	bool Get							( string information );
+	
+	void ClearAll						();
+
+	bool SaveTo							( string fileName );
+	bool GetEverything					();
 
 	ippSaveManager(void);
 	~ippSaveManager(void);

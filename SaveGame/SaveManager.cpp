@@ -8,7 +8,6 @@ ippSaveManager::ippSaveManager()
 	addOn = false;
 }
 
-
 ippSaveManager::~ippSaveManager(void)
 {
 }
@@ -54,8 +53,162 @@ void ippSaveManager::DropInstance()
 
 bool ippSaveManager::Init( string fileName )
 {
+	ifstream			myfile( useThisFile );
 	useThisFile = fileName;
-	return true;
+
+	if( myfile.is_open() )
+	{
+		myfile.close();
+		return true;
+	}
+	else
+	{
+		printf( "Unable to open file %s to save in by default\n", useThisFile.c_str() );
+		return false;
+	}
+}
+
+bool ippSaveManager::AddCategory( const string categoryName )
+{
+	int				offset;
+	string			decoded = "";
+	string			encoded = base64_encode(reinterpret_cast<const unsigned char*>(categoryName.c_str()), categoryName.length()) + "\n";
+	string			slot = "(Blank)";
+	string			blank = base64_encode(reinterpret_cast<const unsigned char*>(slot.c_str()), slot.length());
+	string			line;
+	ifstream		inputFile( useThisFile );
+
+	if( inputFile.is_open() )
+	{
+		while( !inputFile.eof() )
+		{
+			getline( inputFile, line );
+			decoded += line;
+			decoded += "\n";
+			if( ( offset = base64_decode( line ).find( categoryName, 0 ) ) != string::npos )
+			{
+				inputFile.close();
+				printf( "This Category %s already exists\n", categoryName.c_str() );
+				return false;
+			}
+		}
+		inputFile.close();
+	}
+	else
+	{
+		printf( "Unable to open file %s to encrypt this %s\n", useThisFile.c_str(), categoryName.c_str() );
+		return false;
+	}
+
+	ofstream outputFile( useThisFile );
+
+	if( outputFile.is_open() )
+	{
+		outputFile << decoded;
+		outputFile << encoded;
+		outputFile << blank;
+		outputFile.close();
+		return true;
+	}
+	else
+	{
+		printf( "Unable to open file %s to encrypt this %s\n", useThisFile.c_str(), categoryName.c_str() );
+		return false;
+	}
+}
+
+bool ippSaveManager::AddInformationInto( const string information, const string categoryName )
+{
+	int				offset;
+	string			decoded = "";
+	string			encoded = base64_encode(reinterpret_cast<const unsigned char*>(information.c_str()), information.length());
+	string			slot = "(Blank)";
+	string			blank = base64_encode(reinterpret_cast<const unsigned char*>(slot.c_str()), slot.length());
+	string			line;
+	ifstream		inputFile( useThisFile );
+
+	if( inputFile.is_open() )
+	{
+		while( getline( inputFile, line ) )
+		{
+			decoded += line;
+			decoded += "\n";
+			printf( "ENCODED <-%s\n", line.c_str() );
+			printf( "DECODED ->%s\n", base64_decode(line).c_str() );
+			if( ( offset = base64_decode(line).find( categoryName, 0 ) ) != string::npos )
+			{
+				decoded += encoded;
+				printf( "Entering %s\n", base64_decode(encoded).c_str() );
+				decoded += "\n";
+			}
+		}
+		inputFile.close();
+		printf( "\n" );
+	}
+	else
+	{
+		printf( "Unable to open file %s to encrypt this %s\n", useThisFile.c_str(), categoryName.c_str() );
+		return false;
+	}
+
+	ofstream outputFile( useThisFile );
+
+	if( outputFile.is_open() )
+	{
+		outputFile << decoded;
+		outputFile.close();
+		return true;
+	}
+	else
+	{
+		printf( "Unable to open file %s to encrypt this %s\n", useThisFile.c_str(), categoryName.c_str() );
+		return false;
+	}
+}
+
+bool ippSaveManager::EditThis( const string target, const string change )
+{	
+	int				offset;								//	Variable for checking if fromFile matches target
+	string			tempHold;							//	Takes in the string from the text file and holds it temporary
+	string			fromFile = "";						//	Is the string of all of the information taken from the text file
+	ifstream		inputFile( useThisFile );
+
+	if( inputFile.is_open() )							//	Open the text file
+	{
+		while( !inputFile.eof() )						//	While the text file is not at the end
+		{
+			getline( inputFile, tempHold );
+			fromFile += tempHold;
+			fromFile += "\n";			
+														//	if tempHold value matches target value
+			if( ( offset = base64_decode( tempHold ).find( target, 0 ) ) != string::npos )
+			{
+				getline( inputFile, tempHold );			//	Takes in the next line
+														//	Changes the value taken in
+				fromFile += base64_encode( reinterpret_cast<const unsigned char*>(change.c_str()), change.length() );
+				fromFile += "\n";
+			}
+		}
+		inputFile.close();								//	Close the text file
+	}
+	else
+	{
+		printf( "Unable to open file %s to encrypt this %s\n", useThisFile.c_str(), target.c_str() );
+		return false;
+	}
+
+	ofstream outputFile( useThisFile );					//	Open the text file again
+	if( outputFile.is_open() )
+	{
+		outputFile << fromFile;							//	Enters the information taken from the above section
+		outputFile.close();								//	Close the text file
+		return true;
+	}
+	else
+	{
+		printf( "Unable to open file %s to encrypt this %s\n", useThisFile.c_str(), target.c_str() );
+		return false;
+	}
 }
 
 bool ippSaveManager::EncryptThis( const string information )
@@ -64,9 +217,11 @@ bool ippSaveManager::EncryptThis( const string information )
 	//	Website link is http://www.adp-gmbh.ch/cpp/common/base64.html
 	if( addOn )
 	{
-		string tempHold, line;
-		ifstream inputFile( useThisFile );
-		string decoded = "";
+		string			decoded = "";
+		string			tempHold;
+		string			line;
+		ifstream		inputFile( useThisFile );
+
 		if( inputFile.is_open() )
 		{
 			while( !inputFile.eof() )
@@ -84,8 +239,8 @@ bool ippSaveManager::EncryptThis( const string information )
 		}
 
 		string encoded = base64_encode(reinterpret_cast<const unsigned char*>(information.c_str()), information.length());
-
 		ofstream outputFile( useThisFile );
+
 		if( outputFile.is_open() )
 		{
 			outputFile << decoded;
@@ -100,9 +255,9 @@ bool ippSaveManager::EncryptThis( const string information )
 	}
 	else
 	{
-		string encoded = base64_encode(reinterpret_cast<const unsigned char*>(information.c_str()), information.length());
+		string			encoded = base64_encode(reinterpret_cast<const unsigned char*>(information.c_str()), information.length());
+		ofstream		myfile( useThisFile );
 
-		ofstream myfile( useThisFile );
 		if( myfile.is_open() )
 		{
 			myfile << encoded;
@@ -122,13 +277,15 @@ bool ippSaveManager::EncryptThis( const int information )
 	//	Credit to René Nyffenegger
 	//	Website link is http://www.adp-gmbh.ch/cpp/common/base64.html
 
-	string numberString = ConvertInt( information );
+	string				numberString = ConvertInt( information );
 
 	if( addOn )
 	{
-		string tempHold, line;
-		ifstream inputFile( useThisFile );
-		string decoded = "";
+		string			decoded = "";
+		string			tempHold;
+		string			line;
+		ifstream		inputFile( useThisFile );
+
 		if( inputFile.is_open() )
 		{
 			while( !inputFile.eof() )
@@ -145,14 +302,15 @@ bool ippSaveManager::EncryptThis( const int information )
 			return false;
 		}
 
-		string encoded = base64_encode(reinterpret_cast<const unsigned char*>(numberString.c_str()), numberString.length());
+		string			encoded = base64_encode(reinterpret_cast<const unsigned char*>(numberString.c_str()), numberString.length());
+		ofstream		outputFile( useThisFile );
 
-		ofstream outputFile( useThisFile );
 		if( outputFile.is_open() )
 		{
 			outputFile << decoded;
 			outputFile << encoded;
 			outputFile.close();
+			return true;
 		}
 		else
 		{
@@ -162,9 +320,9 @@ bool ippSaveManager::EncryptThis( const int information )
 	}
 	else
 	{
-		string encoded = base64_encode(reinterpret_cast<const unsigned char*>(numberString.c_str()), numberString.length());
+		string			encoded = base64_encode(reinterpret_cast<const unsigned char*>(numberString.c_str()), numberString.length());
+		ofstream		myfile( useThisFile );
 
-		ofstream myfile( useThisFile );
 		if( myfile.is_open() )
 		{
 			myfile << encoded;
@@ -181,25 +339,25 @@ bool ippSaveManager::EncryptThis( const int information )
 
 bool ippSaveManager::Get( string information )
 {
-	int offset, cc = 0;
-	bool found = false;
-	string line, decoded;
-	ifstream myfile( useThisFile );
+	int				offset;
+	bool			found = false;
+	string			line;
+	string			decoded;
+	ifstream		myfile( useThisFile );
+
 	if( myfile.is_open() )
 	{
-		printf( "< - - -Opening file %s- - - >\n", useThisFile.c_str() );
-		printf( "Searchin for %s\n\n", information.c_str() );
 		while( getline( myfile, line ) && found == false )
 		{
-			//printf( "This is before decoding <%s>\n", line.c_str() );
 			decoded = base64_decode(line);
-			//printf( "cc = %d\n", cc++ );
-			//printf( "looking at %s\n", decoded.c_str());
+			printf( "%s\n", decoded.c_str() );
 			if( ( offset = decoded.find( information, 0 ) ) != string::npos )
 			{
-				printf( "Found %s ! !\n", information.c_str() );
-				getline( myfile, line );
-				printf( "Search result: %s\n", base64_decode(line).c_str() );
+				printf( "Here %s is!!\n", information.c_str() );
+				while( getline( myfile, line ) && ( offset != decoded.find( "(Blank)", 0 ) ) != string::npos )
+				{
+					printf( "Search result: %s\n", base64_decode(line).c_str() );
+				}
 				found = true;
 			}
 		}
@@ -209,10 +367,8 @@ bool ippSaveManager::Get( string information )
 			{
 				printf( "Unable to find %s\n", information.c_str() );
 			}
-			printf( "\n<---End of file--->\n" );
 		}
 		myfile.close();
-		printf( "< - - -Closing file %s- - - >\n", useThisFile.c_str() );
 		return true;
 	}
 	else
@@ -224,8 +380,9 @@ bool ippSaveManager::Get( string information )
 
 void ippSaveManager::ClearAll()
 {
+	ofstream			myfile( useThisFile );
 	addOn = false;
-	ofstream myfile( useThisFile );
+
 	if( myfile.is_open() )
 	{
 		myfile.close();
@@ -238,12 +395,11 @@ void ippSaveManager::ClearAll()
 
 bool ippSaveManager::SaveTo( string fileName )
 {
+	ifstream			myfile( useThisFile );
 	useThisFile = fileName;
-	ifstream myfile( useThisFile );
+
 	if( myfile.is_open() )
 	{
-		//printf( "< - - -Able to open file %s for saving- - - >\n", useThisFile.c_str() );
-		//myfile << "Testing Save";
 		myfile.close();
 		return 1;
 	}
@@ -256,12 +412,12 @@ bool ippSaveManager::SaveTo( string fileName )
 
 bool ippSaveManager::GetEverything()
 {
-	string line, decoded;
-	ifstream myfile( useThisFile );
+	string				line;
+	string				decoded;
+	ifstream			myfile( useThisFile );
+
 	if( myfile.is_open() )
 	{
-		printf( "< - - -Opening file %s- - - >\n", useThisFile.c_str() );
-		printf( "-@-@-Start of file-@-@-\n" );
 		while( !myfile.eof() ) 
 		{
 			getline( myfile, line );
@@ -273,7 +429,6 @@ bool ippSaveManager::GetEverything()
 			printf( "-@-@-End of file-@-@-\n" );
 		}
 		myfile.close();
-		printf( "< - - -Closing file %s- - - >\n", useThisFile.c_str() );
 		return true;
 	}
 	else
