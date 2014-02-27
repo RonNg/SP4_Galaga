@@ -16,6 +16,7 @@ private:
 	
 	string ConvertInt					( int num );
 	bool IsInteger						( string &ss );
+	void CreateNewFile					();
 
 public:
 	static ippSaveManager* GetInstance	();
@@ -30,6 +31,7 @@ public:
 	bool EncryptThis					( const string information );
 	bool EncryptThis					( const int information );
 	bool Get							( string information );
+	int GetInt							( string information );
 	
 	void ClearAll						();
 

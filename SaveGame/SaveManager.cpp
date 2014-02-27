@@ -32,6 +32,18 @@ bool ippSaveManager::IsInteger( string &ss )
 	return( *p == 0 );
 }
 
+void ippSaveManager::CreateNewFile()
+{
+	ofstream			myfile( useThisFile );
+	string something = "Stuff\n";
+	if( myfile.is_open() )
+	{
+		printf( "Created new text file called %s\n", useThisFile.c_str() );
+		myfile << base64_encode( reinterpret_cast<const unsigned char*>(something.c_str()), something.length() );
+		myfile.close();
+	}
+}
+
 ippSaveManager* ippSaveManager::GetInstance()
 {
 	if( s_mInstance == NULL )
@@ -53,8 +65,8 @@ void ippSaveManager::DropInstance()
 
 bool ippSaveManager::Init( string fileName )
 {
-	ifstream			myfile( useThisFile );
 	useThisFile = fileName;
+	ifstream			myfile( useThisFile );
 
 	if( myfile.is_open() )
 	{
@@ -64,6 +76,9 @@ bool ippSaveManager::Init( string fileName )
 	else
 	{
 		printf( "Unable to open file %s to save in by default\n", useThisFile.c_str() );
+
+		CreateNewFile();
+
 		return false;
 	}
 }
@@ -133,12 +148,13 @@ bool ippSaveManager::AddInformationInto( const string information, const string 
 		{
 			decoded += line;
 			decoded += "\n";
-			printf( "ENCODED <-%s\n", line.c_str() );
-			printf( "DECODED ->%s\n", base64_decode(line).c_str() );
 			if( ( offset = base64_decode(line).find( categoryName, 0 ) ) != string::npos )
 			{
+				getline( inputFile, line );
+				getline( inputFile, line );
 				decoded += encoded;
-				printf( "Entering %s\n", base64_decode(encoded).c_str() );
+				decoded += "\n";
+				decoded += blank;
 				decoded += "\n";
 			}
 		}
@@ -353,10 +369,11 @@ bool ippSaveManager::Get( string information )
 			printf( "%s\n", decoded.c_str() );
 			if( ( offset = decoded.find( information, 0 ) ) != string::npos )
 			{
-				printf( "Here %s is!!\n", information.c_str() );
+				printf( "Entering below %s!!\n", information.c_str() );
 				while( getline( myfile, line ) && ( offset != decoded.find( "(Blank)", 0 ) ) != string::npos )
 				{
-					printf( "Search result: %s\n", base64_decode(line).c_str() );
+					decoded = base64_decode(line);
+					printf( "Search result: %s\n", decoded.c_str() );
 				}
 				found = true;
 			}
@@ -375,6 +392,49 @@ bool ippSaveManager::Get( string information )
 	{
 		printf( "Unable to open file %s to get this %s\n", useThisFile.c_str(), information.c_str() );
 		return false;
+	}
+}
+
+int ippSaveManager::GetInt( string information )
+{
+	int				offset;
+	bool			found = false;
+	string			line;
+	string			decoded;
+	ifstream		myfile( useThisFile );
+
+	if( myfile.is_open() )
+	{
+		while( getline( myfile, line ) && found == false )
+		{
+			decoded = base64_decode(line);
+			printf( "looking at %s\n", decoded.c_str() );
+			if( ( offset = decoded.find( information, 0 ) ) != string::npos )
+			{
+				printf( "Here %s is!!\n", information.c_str() );
+				while( getline( myfile, line ) && ( offset != decoded.find( "(Blank)", 0 ) ) != string::npos )
+				{
+					decoded = base64_decode(line);
+					printf( "Search result: %d\n", decoded.c_str() );
+					return atoi( base64_decode(line).c_str() );
+				}
+				found = true;
+			}
+		}
+		if( myfile.eof() )
+		{
+			if( offset == -1 )
+			{
+				printf( "Unable to find %s\n", information.c_str() );
+			}
+		}
+		myfile.close();
+		return 0;
+	}
+	else
+	{
+		printf( "Unable to open file %s to get this %s\n", useThisFile.c_str(), information.c_str() );
+		return 0;
 	}
 }
 
