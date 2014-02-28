@@ -109,6 +109,7 @@ GameUI::GameUI(void)
 	current = -1;
 	EnterKey = false;
 	SplashScreen = true;
+	PreviousPage = 0;
 }
 
 GameUI::~GameUI(void)
@@ -179,9 +180,9 @@ void GameUI::Update(bool up)
 
 void GameUI::AddMenu (char* name, char* filename)
 {
+	PreviousPage = current;
 	List.push_back(Menu(name,filename) );
 	current++;
-	
 }
 
 void GameUI::AddButton (char* u,int x, int y)
@@ -239,7 +240,6 @@ void GameUI::RenderGameScreen()
 	glPrint("1UP");					// Render lives accordingly
 	glPrint("STAGE");				// Update Stage according to level number
 	
-	glPopMatrix();
 }
 
 int GameUI::Find (char* name)
@@ -255,7 +255,16 @@ int GameUI::Find (char* name)
 
 void GameUI::Move (char* name)
 {
-	current = Find(name);
+	if (name == "Back")
+	{
+		current = PreviousPage;
+		PreviousPage = current;
+	}
+	else 
+	{
+		PreviousPage = current;
+		current = Find(name);
+	}
 	if ( !(List.begin()+current)->MenuButtons.empty() )
 		cursor.button = &(List.begin()+current)->MenuButtons.back();
 }

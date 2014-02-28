@@ -123,10 +123,20 @@ public:
 	===========================================
 	*/
 	void					TestRender();
-
-
+	void					Joystick(unsigned int buttonMask, int x, int y, int z);
+	bool					JoystickA;
+	bool					JoystickUp;
+	bool					JoystickDown;
+	bool					back;
+	bool					JoystickLeftTrigger;
+	bool					JoystickRightTrigger;
 	//ippShip*				playerShip;
-
+	void					MoveLeft();
+	void					MoveRight();
+	void					MoveUp();
+	void					MoveDown();
+	void					LeftTrigger();
+	void					RightTrigger();
 	
 
 };

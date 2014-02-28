@@ -62,6 +62,7 @@ class GameUI									// Class to handle General Menu
 private:
 	Cursor cursor;
 	int Find (char* name);						// finds cursor position
+	
 public:
 	void Move (char* name);						//Goes to the menu with that name.
 
@@ -75,14 +76,13 @@ public:
 	GameUI(void);
 	~GameUI(void);
 
-
 	char* Identity (void); //Name of button cursor is on.
 	void Render (void);
 	void Update(bool up);
-
+	int PreviousPage;
 	void AddMenu (char* name,char* filename);
 	void AddButton (char* u,int x, int y);				// Handles addition of buttons
-
+	
 	void RenderSplashScreen();							// Renders the SplashScreens
 	void RenderGameScreen();							// Renders GameScreen
 };

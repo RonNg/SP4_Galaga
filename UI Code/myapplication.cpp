@@ -69,7 +69,7 @@ void myApplication::inputKey(int key, int x, int y) {
 
 void myApplication::KeyboardDown(unsigned char key, int x, int y)
 {
-	click = true;
+	
 	myKeys[key]= true;
 }
 
@@ -207,7 +207,58 @@ void myApplication::printw (float x, float y, float z, char* format, ...)
 	free(text);
 }
 
+void myApplication::Joystick(unsigned int buttonMask, int x, int y, int z)
+{
+	// left = -x
+	// right = x
+	// up = -y
+	// down = y
+	// right trigger = -z
+	// left trigger = z
+	// A = 1, B=2 , x=4, y =8 , left bumper = 16, right bumber = 32, back = 64, start = 128, left analouge = 256, right analough = 516
+	
+	switch (buttonMask){
+	case 1:
+			JoystickA = true;
+		break;
+	case 128:
+			click = true;
+		break;
+	case 64:
+			back = true;
+		break;
+	}
+	
+	//if (x < -400)
+	//{
+	//
+	//}
 
+	//else if (x > 400)
+	//{
+	//
+	//}
+
+	if(z < -400)
+	{
+		JoystickRightTrigger = true;
+	}
+
+	else if(z > 400)
+	{
+		JoystickLeftTrigger = true;
+	}
+
+	if (y < -400)
+	{
+		JoystickUp = true;
+	}
+
+	else if (y > 400)
+	{
+		JoystickDown = true;
+	}
+}
 bool myApplication::Init(void)
 {
 	playonce =true;
@@ -289,19 +340,26 @@ bool myApplication::Init(void)
 }
 void myApplication::Update(void) 
 {
-	if( myKeys[13] == true)
+	if( JoystickA == true)
 	{
 		command = theGameUI->Identity();
+		JoystickA = false;
 	}
-	if(	myKeys['w'] == true)
+	if(back == true)
+	{
+		cout<<theGameUI->PreviousPage<<endl;
+		theGameUI->Move("Back")	;
+		back = false;
+	}
+	if(	JoystickUp == true)
 	{
 		theGameUI->Update(true);
-		myKeys['w'] = false;
+		JoystickUp = false;
 	}
-	else if ( myKeys['s'] == true)
+	else if ( JoystickDown == true)
 	{
 		theGameUI->Update(false);
-		myKeys['s'] = false;
+		JoystickDown = false;
 	}
 
 	
@@ -314,7 +372,8 @@ void myApplication::Update(void)
 		}
 		if(click == true){
 			theGameUI->Move("Main Menu");	
-			Sound_BGM = false;
+			theSoundEngine->stopAllSounds();
+			click = false;
 		}
 	}
 	else if (theGameUI->page() == "Main Menu")
@@ -337,7 +396,7 @@ void myApplication::Update(void)
 			glutLeaveMainLoop();
 		}
 		
-
+		command = 0;
 	}
 
 	else if (theGameUI->page() == "Shop");
@@ -346,6 +405,7 @@ void myApplication::Update(void)
 		{
 			theGameUI->Move("ShipUpgrades");
 		}
+		command = 0;
 	}
 
 }
@@ -377,7 +437,7 @@ void myApplication::Render(void) {
 		static float colortemp = 1.0f;							// temp for color changing
 		glColor3f(colortemp,colortemp,colortemp);
 		glRasterPos2f(225,525);
-		glPrint("[PRESS ANY KEY TO CONTINUE]");
+		glPrint("[PRESS START TO CONTINUE]");
 		colortemp-=0.03f;
 		if(colortemp <=0.0f)
 		colortemp = 1.0f;
@@ -420,5 +480,25 @@ void myApplication::TestRender ()
 
 	glDisable(GL_BLEND);
 	glDisable(GL_TEXTURE_2D);
+
+}
+
+void myApplication::MoveLeft()
+{
+
+}
+
+void myApplication::MoveRight()
+{
+
+}
+
+void myApplication::LeftTrigger()
+{
+
+}
+
+void myApplication::RightTrigger()
+{
 
 }
