@@ -27,6 +27,7 @@ public:
 	bool AddCategory					( const string categoryName );
 	bool AddInformationInto				( const string information, const string categoryName );
 	bool EditThis						( const string target, const string change );
+	bool EditThis						( const string target, const int change );
 
 	bool EncryptThis					( const string information );
 	bool EncryptThis					( const int information );

@@ -227,6 +227,52 @@ bool ippSaveManager::EditThis( const string target, const string change )
 	}
 }
 
+bool ippSaveManager::EditThis( const string target, const int change )
+{	
+	string change_int = ConvertInt( change );
+	int				offset;								//	Variable for checking if fromFile matches target
+	string			tempHold;							//	Takes in the string from the text file and holds it temporary
+	string			fromFile = "";						//	Is the string of all of the information taken from the text file
+	ifstream		inputFile( useThisFile );
+
+	if( inputFile.is_open() )							//	Open the text file
+	{
+		while( !inputFile.eof() )						//	While the text file is not at the end
+		{
+			getline( inputFile, tempHold );
+			fromFile += tempHold;
+			fromFile += "\n";			
+														//	if tempHold value matches target value
+			if( ( offset = base64_decode( tempHold ).find( target, 0 ) ) != string::npos )
+			{
+				getline( inputFile, tempHold );			//	Takes in the next line
+														//	Changes the value taken in
+				fromFile += base64_encode( reinterpret_cast<const unsigned char*>(change_int.c_str()), change_int.length() );
+				fromFile += "\n";
+			}
+		}
+		inputFile.close();								//	Close the text file
+	}
+	else
+	{
+		printf( "Unable to open file %s to encrypt this %s\n", useThisFile.c_str(), target.c_str() );
+		return false;
+	}
+
+	ofstream outputFile( useThisFile );					//	Open the text file again
+	if( outputFile.is_open() )
+	{
+		outputFile << fromFile;							//	Enters the information taken from the above section
+		outputFile.close();								//	Close the text file
+		return true;
+	}
+	else
+	{
+		printf( "Unable to open file %s to encrypt this %s\n", useThisFile.c_str(), target.c_str() );
+		return false;
+	}
+}
+
 bool ippSaveManager::EncryptThis( const string information )
 {
 	//	Credit to René Nyffenegger
