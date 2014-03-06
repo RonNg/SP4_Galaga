@@ -1,0 +1,288 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Camera">
+      <UniqueIdentifier>{2eb05a12-52dc-4586-82eb-54d980a2e962}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components">
+      <UniqueIdentifier>{4f03dd62-dfeb-489b-93dc-871c23b87476}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="LoadTGA">
+      <UniqueIdentifier>{6d994109-afd6-4c89-8185-76fc0e5c12c1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities">
+      <UniqueIdentifier>{77ea9ea6-efe8-45ba-8c99-cbcb3455e611}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Managers">
+      <UniqueIdentifier>{f3115b3a-15ff-44a7-a316-2ceed9b2822d}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Components\Components">
+      <UniqueIdentifier>{30402ed1-d05f-4813-9b72-b003a0238190}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Ships">
+      <UniqueIdentifier>{c2b74168-60d3-4a0e-907d-77dd743c52d5}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Weapons">
+      <UniqueIdentifier>{4b95f535-a84b-4dea-97b9-f5ea90e88d12}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="General">
+      <UniqueIdentifier>{14c37c76-51bc-4867-b3ff-a3dd5269b5db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Systems">
+      <UniqueIdentifier>{138f0c85-031d-4e50-ba25-3f5853b39860}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\AI">
+      <UniqueIdentifier>{91b785bf-b1e8-4cd8-a704-36fa72c5abe1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Drones">
+      <UniqueIdentifier>{db873d89-d755-4997-b949-3c7520208c46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Asteroids">
+      <UniqueIdentifier>{78710e11-f0af-467c-b031-6ca75eef8fa0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="SaveManager">
+      <UniqueIdentifier>{9e678fec-b3ad-447a-a7a7-4a88b6f6c7c6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Controller">
+      <UniqueIdentifier>{70104d68-f206-4a6a-92df-ab65634df4f6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\PowerUps">
+      <UniqueIdentifier>{67f02f76-9520-47fc-81f6-fdfe4592865c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Entities\Particles">
+      <UniqueIdentifier>{4c7d3644-62ee-489f-a748-04c16b0bbd09}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Game UI">
+      <UniqueIdentifier>{a703e560-42d5-4100-8d5a-094857208e6c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="BitFont">
+      <UniqueIdentifier>{f8aa5275-82e2-4a65-beca-8d3d9ee4b04a}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Camera\Camera.cpp">
+      <Filter>Camera</Filter>
+    </ClCompile>
+    <ClCompile Include="Components\Colliders\Collider.cpp">
+      <Filter>Components\Components</Filter>
+    </ClCompile>
+    <ClCompile Include="LoadTGA\LoadTGA.cpp">
+      <Filter>LoadTGA</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\CollisionManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\ObjectManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Weapons\MissileLauncher.cpp">
+      <Filter>Entities\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Weapons\TurretClass.cpp">
+      <Filter>Entities\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Weapons\WeaponClass.cpp">
+      <Filter>Entities\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\GameObject.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\QuadClass.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Ship\Ship.cpp">
+      <Filter>Entities\Ships</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="myapplication.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Vec3D.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Waypoint.cpp">
+      <Filter>General</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\GameManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\AI\Enemy.cpp">
+      <Filter>Entities\AI</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Drones\BulletDrone.cpp">
+      <Filter>Entities\Drones</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Drones\DroneClass.cpp">
+      <Filter>Entities\Drones</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Weapons\Bullet.cpp">
+      <Filter>Entities\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\EnemyGrid.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Asteroids\Asteroid.cpp">
+      <Filter>Entities\Asteroids</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveGame\base64.cpp">
+      <Filter>SaveManager</Filter>
+    </ClCompile>
+    <ClCompile Include="SaveGame\SaveManager.cpp">
+      <Filter>SaveManager</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Weapons\Missile.cpp">
+      <Filter>Entities\Weapons</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\PowerUps\PowerUp.cpp">
+      <Filter>Entities\PowerUps</Filter>
+    </ClCompile>
+    <ClCompile Include="Systems\EnemySpawner.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Asteroids\AsteroidManager.cpp">
+      <Filter>Systems</Filter>
+    </ClCompile>
+    <ClCompile Include="Entities\Particles\ParticleClass.cpp">
+      <Filter>Entities\Particles</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\EmitterClass.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\EmitterManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+    <ClCompile Include="GameUI\GameUI.cpp">
+      <Filter>Game UI</Filter>
+    </ClCompile>
+    <ClCompile Include="BitFont\BitFont.cpp">
+      <Filter>BitFont</Filter>
+    </ClCompile>
+    <ClCompile Include="StarBackground\Star.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="StarBackground\StarManager.cpp">
+      <Filter>Entities</Filter>
+    </ClCompile>
+    <ClCompile Include="Managers\PowerUpManager.cpp">
+      <Filter>Managers</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Camera\Camera.h">
+      <Filter>Camera</Filter>
+    </ClInclude>
+    <ClInclude Include="Components\Colliders\Collider.h">
+      <Filter>Components\Components</Filter>
+    </ClInclude>
+    <ClInclude Include="LoadTGA\LoadTGA.h">
+      <Filter>LoadTGA</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\CollisionManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\ObjectManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Weapons\MissileLauncher.h">
+      <Filter>Entities\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Weapons\TurretClass.h">
+      <Filter>Entities\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Weapons\WeaponClass.h">
+      <Filter>Entities\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\GameObject.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\QuadClass.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Ship\Ship.h">
+      <Filter>Entities\Ships</Filter>
+    </ClInclude>
+    <ClInclude Include="main.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="myapplication.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Vec3D.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Waypoint.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\GameManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\AI\Enemy.h">
+      <Filter>Entities\AI</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Drones\BulletDrone.h">
+      <Filter>Entities\Drones</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Drones\DroneClass.h">
+      <Filter>Entities\Drones</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Weapons\Bullet.h">
+      <Filter>Entities\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\EnemyGrid.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Asteroids\Asteroid.h">
+      <Filter>Entities\Asteroids</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveGame\base64.h">
+      <Filter>SaveManager</Filter>
+    </ClInclude>
+    <ClInclude Include="SaveGame\SaveManager.h">
+      <Filter>SaveManager</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Weapons\Missile.h">
+      <Filter>Entities\Weapons</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\PowerUps\PowerUp.h">
+      <Filter>Entities\PowerUps</Filter>
+    </ClInclude>
+    <ClInclude Include="Systems\EnemySpawner.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Asteroids\AsteroidManager.h">
+      <Filter>Systems</Filter>
+    </ClInclude>
+    <ClInclude Include="Globals.h">
+      <Filter>General</Filter>
+    </ClInclude>
+    <ClInclude Include="Entities\Particles\ParticleClass.h">
+      <Filter>Entities\Particles</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\EmitterClass.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\EmitterManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+    <ClInclude Include="GameUI\GameUI.h">
+      <Filter>Game UI</Filter>
+    </ClInclude>
+    <ClInclude Include="BitFont\BitFont.h">
+      <Filter>BitFont</Filter>
+    </ClInclude>
+    <ClInclude Include="StarBackground\Star.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="StarBackground\StarManager.h">
+      <Filter>Entities</Filter>
+    </ClInclude>
+    <ClInclude Include="Managers\PowerUpManager.h">
+      <Filter>Managers</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>
