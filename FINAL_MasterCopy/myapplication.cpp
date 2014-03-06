@@ -87,7 +87,7 @@ void myApplication::KeyboardUp(unsigned char key, int x, int y){
 	myKeys[key]= false;
 }
 
-void myApplication::Joystick(unsigned int buttonMask, int x, int y, int z)
+void myApplication::Joystick(unsigned int buttonMask, int x, int y, int z)						// checks for Joystick presses
 {
 	// left = -x
 	// right = x
@@ -98,26 +98,26 @@ void myApplication::Joystick(unsigned int buttonMask, int x, int y, int z)
 	// A = 1, B=2 , x=4, y =8 , left bumper = 16, right bumber = 32, back = 64, start = 128, left analouge = 256, right analough = 516
 
 	switch (buttonMask){
-	case 1:
-		Global::JoystickA = true;
-		break;
-	case 128:
-		Global::start = true;
-		break;
-	case 64:
-		Global::back = true;
-		break;
+	case 1:																						// if A button is pressed
+		Global::JoystickA = true;																// bool JoystickA = true
+		break;																					// break
+	case 128:																					// if start button is pressed
+		Global::start = true;																	// bool start = true
+		break;																					// break
+	case 64:																					// if back button is pressed
+		Global::back = true;																	// bool back = true
+		break;																					// back
 	}
-
-	if (x < -400)
-	{
+	
+	if (x < -400)																				// checks for Left Analogue's direction
+	{			
 		Global::JoystickLeft = true;
 	}
 	else 
-		Global::JoystickLeft = false;
+		Global::JoystickLeft = false;													
 
 
-	if (x > 400)
+	if (x > 400)																				// checks for Left Analogue's direction
 	{
 		Global::JoystickRight = true;
 	}
@@ -125,30 +125,30 @@ void myApplication::Joystick(unsigned int buttonMask, int x, int y, int z)
 		Global::JoystickRight = false;
 
 
-	if(z < -800)
+	if(z < -800)																				// checks for Right Trigger press
 	{
-		if (Global::JoyKeyPress == false)
+		if (Global::JoyKeyPress == false)														// checks if button wasn't held down
 		{
 			Global::JoyKeyPress = true;
 			Global::JoystickRightTrigger = true;
 
 		}
 	}
-	else if(z > 400)
+	else if(z > 400)																			// checks for Left Trigger press
 	{
-		Global::JoystickLeftTrigger = true;
+		Global::JoystickLeftTrigger = true;														// checks if button wasn't held down
 	}
 	else
 	{
 		Global::JoyKeyPress = false;
 	}
 
-	if (y < -400)
+	if (y < -400)																				// checks for Left Analogue' y axis going up
 	{
 		Global::JoystickUp = true;
 	}
 
-	else if (y > 400)
+	else if (y > 400)																			// checks for Left Analogue' y axis going down
 	{
 		Global::JoystickDown = true;
 	}
