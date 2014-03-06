@@ -606,7 +606,7 @@ void ippGameManager::LoadLevel ()
 	{
 		 temp = RNG (25, 100 );
 	}
-	else if ( waveNo <= 7 )
+	else if ( waveNo >= 7 )
 	{
 		 temp = RNG (51, 100 );
 	}
