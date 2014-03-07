@@ -431,9 +431,9 @@ void ippEnemy::Update()
 }
 void ippEnemy::Render()
 {
+	
 	// Enable/Disable features
 	glEnable(GL_TEXTURE_2D);
-
 
 	glPushMatrix();
 	glTranslatef( position.x, position.y, 0);
@@ -461,5 +461,6 @@ void ippEnemy::Render()
 	glPopMatrix();
 
 	glDisable(GL_TEXTURE_2D);
+
 
 }

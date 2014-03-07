@@ -16,7 +16,7 @@ class Button								//Class to handle button rendering
 private:
 	
 public:
-	Button (char* G,int nx, int ny);		// Button (name, position x, position y)
+	Button (char* G,int nx, int ny);
 	~Button(void);
 
 	char* u;
@@ -28,12 +28,12 @@ public:
 //====================
 //		Cursor
 //====================
-class Cursor										// Class to handle Button Selection
+class Cursor								// Class to handle Button Selection
 {
 	private:
 
 	public:
-	Cursor(Button* temp = NULL);		
+	Cursor(Button* temp = NULL);
 	~Cursor(void);
 
 	Button* button;
@@ -108,15 +108,15 @@ public:
 	GameUI(void);
 	~GameUI(void);
 
-	char* Identity (void);						//Name of button cursor is on.
+	char* Identity (void); //Name of button cursor is on.
 	void Render (void);
 	void Update(bool up);
-	void AddMenu (char* name,char* filename);			// Handles addition of pages
+	void AddMenu (char* name,char* filename);
 	void AddButton (char* u,int x, int y);				// Handles addition of buttons
 	
-	void RenderMainMenuText();							// Renders text for Main Menu
-	void RenderShopText();								// Renders text for Shop
-	void RenderSplashText();							// Renders text for SplashScreen
+	void RenderMainMenuText();
+	void RenderShopText();
+	void RenderSplashText();							// Renders the SplashScreens
 
 
 	void RenderGameScreen();							// Renders GameScreen

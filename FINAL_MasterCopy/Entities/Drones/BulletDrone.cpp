@@ -19,6 +19,8 @@ ippBulletDrone::ippBulletDrone ( Vec3D* position, float sizeX, float sizeY )
 	delay = 50.0f;
 	curTime = 0.0f;
 
+	LoadTGA ( &drone, "Images/Drone/drone.tga" );
+
 	ippObjectManager::GetInstance ()->AddObj ( this );
 }
 
@@ -91,7 +93,6 @@ void ippBulletDrone::Init ( int numOfBullets, int rechargeLevel )
 
 void ippBulletDrone::Update ( void )
 {
-	
 	droneDirFromShip.Rotate2D ( angle, true );
 	dronePosition = (Vec3D ( position->x + ( droneDirFromShip.x * 20 ), position->y + ( droneDirFromShip.y * 20 ), position->z + ( droneDirFromShip.z * 20 ) ) );
 
@@ -122,8 +123,8 @@ void ippBulletDrone::Render ( void )
 	glColor4f ( 1.0f, 1.0f, 1.0f, 1.0f );
 	glEnable ( GL_BLEND );//Blending for alpha effects
 	glBlendFunc ( GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA );
-	//glEnable(GL_TEXTURE_2D);
-	//glBindTexture(GL_TEXTURE_2D, missile[0].texID);
+	glEnable(GL_TEXTURE_2D);
+	glBindTexture(GL_TEXTURE_2D, drone.texID);
 
 	glBegin ( GL_QUADS );
 
@@ -134,7 +135,7 @@ void ippBulletDrone::Render ( void )
 
 	glEnd();
 
-	//glDisable(GL_TEXTURE_2D);
+	glDisable(GL_TEXTURE_2D);
 	glDisable ( GL_BLEND );
 	glPopMatrix ();
 }

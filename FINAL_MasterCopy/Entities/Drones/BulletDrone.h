@@ -3,6 +3,7 @@
 #include <vector>
 #include "Entities\Drones\DroneClass.h"
 #include "Entities\Weapons\Bullet.h"
+#include "LoadTGA\LoadTGA.h"
 
 // Lua scripting
 extern "C" {
@@ -29,5 +30,7 @@ public:
 private:
 	float delay;
 	float curTime;
+
+	TextureImage drone;
 };
 

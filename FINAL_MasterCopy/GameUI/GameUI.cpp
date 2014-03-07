@@ -25,12 +25,12 @@ void Button::Render(void)
 	glPushMatrix();
 	glTranslatef (x,y, 0);
 	glColor3f(0,0,0);
-	  glBegin(GL_QUADS);								    // Draw A Quad
+	  glBegin(GL_QUADS);                      // Draw A Quad
 	  glVertex2f(-dimensions.x, dimensions.y);              // Top Left
-        glVertex2f( dimensions.x, dimensions.y);            // Top Right
-        glVertex2f( dimensions.x,-dimensions.y);            // Bottom Right
-        glVertex2f(-dimensions.x,-dimensions.y);            // Bottom Left
-    glEnd();												// Done Drawing The Quad
+        glVertex2f( dimensions.x, dimensions.y);              // Top Right
+        glVertex2f( dimensions.x,-dimensions.y);              // Bottom Right
+        glVertex2f(-dimensions.x,-dimensions.y);              // Bottom Left
+    glEnd();                            // Done Drawing The Quad
 	glPopMatrix();
 }
 
@@ -64,9 +64,9 @@ void Cursor::Render(void)
 
 }
 
-Menu::Menu(char *Name,char* filename)					// Addition of new page
+Menu::Menu(char *Name,char* filename)
 {
-	name = Name;										// name of page = User Defined name
+	name = Name;
 	
 	alphaValue = 0.0f;
 	sizeOfImage = Vec3D( 800.0f, 600.0f, 0.0f );
@@ -82,7 +82,7 @@ Menu::~Menu (void)
 	MenuButtons.clear();
 }
 
-void Menu::Render (void)								// Renders the page for every new "page"
+void Menu::Render (void)
 {
 	glRasterPos2f(0,10);
 	glPushMatrix();
@@ -163,7 +163,7 @@ void GameUI::Render()									// Renders main menu items
 		cursor.Render();
 }
 
-void GameUI::Update(bool up)							// Handles the button selection
+void GameUI::Update(bool up)
 {
 	std::vector<Menu>::iterator itr = List.begin() + current;
 
@@ -227,7 +227,7 @@ void GameUI::AddButton (char* u,int x, int y)
 {
 	std::vector<Menu>::iterator iter = (List.begin()+current);
 
-	if (iter->MenuButtons.size() >= 9)						// Limits Buttons created to 9
+	if (iter->MenuButtons.size() >= 9)						// Limits Buttons created to 3
 	{
 		return;
 	}
@@ -258,7 +258,7 @@ void GameUI::AddButton (char* u,int x, int y)
 
 void GameUI::RenderSplashText()
 {	
-	static float colortemp = 1.0f;					// temp for color changing
+	static float colortemp = 1.0f;				// temp forcolor changing
 		glColor3f(colortemp,colortemp,colortemp);
 		glRasterPos2f(225,525);
 		glPrint("[PRESS ANY KEY TO CONTINUE]");
@@ -268,7 +268,7 @@ void GameUI::RenderSplashText()
 	glColor3f(1,1,1);
 }
 
-void GameUI::RenderMainMenuText()					// Main Menu Text
+void GameUI::RenderMainMenuText()
 {
 		glColor3f(1,1,1);
 		glRasterPos2f(360,450);
@@ -283,7 +283,7 @@ void GameUI::RenderMainMenuText()					// Main Menu Text
 		glPrint("Quit");
 }
 
-void GameUI::RenderShopText()					// Shop Text
+void GameUI::RenderShopText()
 {
 		glColor3f(0,0,0);
 		glRasterPos2f(360,57);
@@ -320,18 +320,18 @@ void GameUI::RenderShopText()					// Shop Text
 
 int GameUI::Find (char* name)
 {
-	std::vector<Menu>::iterator itr;			// Goes down the list to find matching char
+	std::vector<Menu>::iterator itr;
 	for (itr = List.begin() ; itr != List.end() ; itr++ )
 	{
 		if (itr->name == name)
 			return std::distance(List.begin(),itr);
 	}
-	return -1;									// if it returns negative , means buttons missing/broken
+	return -1;						// if it returns negative , means buttons missing/broken
 }
 
-void GameUI::Move (char* name)					// Navigation of pages
+void GameUI::Move (char* name)
 {
-	if (name == "Back")							// If back button on controller is pressed, returns user to  his previous screen
+	if (name == "Back")
 	{
 		current = PreviousPage;
 		PreviousPage = current;

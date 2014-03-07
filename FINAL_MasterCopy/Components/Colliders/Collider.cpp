@@ -59,7 +59,7 @@ void ippCollider2D::Debug_RenderCollider ()
 			glEnd();
 		glPopMatrix();
 
-		glPushMatrix();		
+	/*	glPushMatrix();		
 		glTranslatef(objPosition->x, objPosition->y, 0 );
 
 			glBegin(GL_LINE_LOOP);
@@ -69,7 +69,7 @@ void ippCollider2D::Debug_RenderCollider ()
 				glVertex2f(radius * cos(angle), radius * sin(angle));
 			}
 			glEnd();
-		glPopMatrix();
+		glPopMatrix();*/
 	}
 }
 
